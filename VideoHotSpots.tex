@@ -1,0 +1,139 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Augmenting TV Newscasts via Entity Expansion  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{llncs}
+
+\newcommand{\superscript}[1]{\ensuremath{^{\textrm{#1}}}}
+
+\usepackage{makeidx}  % allows for indexgeneration
+\usepackage[hyphens]{url}
+\usepackage{textcomp}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{multirow}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[font=small,labelfont=bf]{caption}
+\setcounter{MaxMatrixCols}{20}
+\usepackage{pbox}
+\usepackage{amsfonts}
+
+
+% listing styles
+\lstset{numbers=left, numberstyle=\tiny,basicstyle=\ttfamily\scriptsize, tabsize=2, keywordstyle=\underbar, stringstyle=\small, backgroundcolor=\color[gray]{0.94}, framexleftmargin=2pt}
+\lstdefinestyle{rdfa}{numberblanklines=true, morekeywords={}}
+
+
+
+\begin{document}
+\frontmatter          % for the preliminaries
+\pagestyle{headings}  % switches on printing of running heads
+\mainmatter              % start of the contributions
+
+\title{Finding and Sharing Hot Spots in Web Videos}
+\author{Jos\'e Luis Redondo Garc\'ia\inst{1}, Mariella Sabatino\inst{1}, Pasquale Lisena\inst{1}, Rapha\"el Troncy\inst{1}}
+\institute{
+EURECOM, Sophia Antipolis, France, \\
+\email{\{redondo, mariella.sabatino, pasquale.lisena, raphael.troncy\}@eurecom.fr}
+}
+
+
+\maketitle              % typeset the title of the contribution
+
+%%%%%%%%%%%%%%%%%%
+%%%  Abstract  %%%
+%%%%%%%%%%%%%%%%%%
+
+\begin{abstract}
+We present an approach that leverages on visual analysis techniques and the knowledge present on the Web for identifying relevant fragments (called hot spots) inside a video from the Web, in order to promote the consumption of media resources at a higher level of granularity. 
+
+Summary of the approach here.
+
+An online demo of the proposed solution is available at \url{http://linkedtv.eurecom.fr/mediafragmentplayer}.
+
+\keywords{Video Annotation, Entity Expansion, News Enrichment}
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  1. Introduction  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+
+People consume news from multiple sources, such as television, Web, radio and newspaper. For example, we watch the newscast on TV early in the morning to get an overview of the main news, we use the Web to keep track of the News throughout the day, and when we have some spare time we actively browse the Web to explore the news items that we are interested in. At the end of the day, our understanding about the news is a compendium of various information pieces coming from different sources, which complement each other and enrich our news experience. The problem is that in practice it is difficult and time consuming to manually gather all those insights together. Our research tackles this inconvenience by quickly offering extra information about the newscast organized in various dimensions which intend to illustrate all those details you watched but would like to further explore. 
+
+% Semantic
+The problem of multimedia annotation has been traditionally addressed by applying different analysis techniques~\cite{ballan2011event}, but extracting semantic information from a video is still a challenging task. One possible approach consists in using Named Entity Recognition (NER) over the textual information attached to particular video fragment. Those techniques are an essential component within the Information Extraction field that focus on: identifying atomic information units in texts, named entities; classifying entities into predefined categories (also called context types) and linking to real world objects using web identifiers (Named Entity Disambiguation). A growing number of APIs provide such a service, like AlchemyAPI\footnote{\fontsize{8pt}{1em}\selectfont \url{http://www.alchemyapi.com/}} or DBpedia Spotlight\footnote{\fontsize{8pt}{1em}\selectfont \url{http://spotlight.dbpedia.org/}}. If the textual information attached to a video contains temporal references (e.g. subtitles), it is possible to align the entities with the time when they appear in the video. In this line, Yunjia et al.~\cite{yunjia2013} have probed that named entity recognition techniques applied on video subtitles can produce good results for video classification. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Generating and Displaying Hot Spots in Web Videos     %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Generating and Displaying Hot Spots in Web Videos}
+\label{sec:hotspots}
+
+\begin{itemize}
+  \item General goal and contributions.
+  \item Summary of the approach.
+\end{itemize}
+
+%%%  Annotating Web Videos %%%
+\subsection{Annotating Web Videos}
+\label{sec:videoannotation}
+
+\begin{itemize}
+  \item Visual clues: Shot segmentation + concept detection.
+  \item Textual clues: Subtitles
+  \item Semantic clues: Named Entity Extraction.
+\end{itemize}
+
+%%%  Media Fragments Generation %%%
+\subsection{Hot Spots Generation}
+\label{sec:fragmentsgeneration}
+
+\begin{itemize}
+  \item Clustering algorithm.
+  \item Ranking of entities
+  \item Ranking of Visual concepts.
+\end{itemize}
+
+\subsection{Displaying Hot Spots in MF Player}
+
+\begin{itemize}
+  \item UI Description.
+  \item Connection Backend-Frontend via REST services.
+\end{itemize}
+
+%%%  Use Case: TED talks %%%
+\subsubsection{The use case: TED Talks}
+\label{sec:usecase}
+
+		
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%  4. Discussion  %%%
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Discussion}
+\label{sec:discussion}
+
+TODO
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Acknowledgments  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Acknowledgments}
+This work was partially supported by the European Union's 7th Framework Programme via the project LinkedTV (GA 287911).
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%%  Bibliography  %%%
+%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{abbrv}
+\bibliography{VideoHotSpots}
+
+\end{document}
