@@ -34,7 +34,7 @@
 \pagestyle{headings}  % switches on printing of running heads
 \mainmatter              % start of the contributions
 
-\title{Finding and Sharing Hot Spots in Web Videos}
+\title{Detecting and Displaying Hot Spots in Web Videos}
 \author{Jos\'e Luis Redondo Garc\'ia\inst{1}, Mariella Sabatino\inst{1}, Pasquale Lisena\inst{1}, Rapha\"el Troncy\inst{1}}
 \institute{
 EURECOM, Sophia Antipolis, France, \\
@@ -51,7 +51,7 @@ EURECOM, Sophia Antipolis, France, \\
 \begin{abstract}
 We present an approach that leverages on visual analysis techniques and the knowledge present on the Web for identifying relevant fragments (called hot spots) inside a video from the Web, in order to promote the consumption of media resources at a higher level of granularity. 
 
-Summary of the approach here.
+Summary of the approach here. TED talks.
 
 An online demo of the proposed solution is available at \url{http://linkedtv.eurecom.fr/mediafragmentplayer}.
 
@@ -64,45 +64,55 @@ An online demo of the proposed solution is available at \url{http://linkedtv.eur
 
 \section{Introduction}
 
-People consume news from multiple sources, such as television, Web, radio and newspaper. For example, we watch the newscast on TV early in the morning to get an overview of the main news, we use the Web to keep track of the News throughout the day, and when we have some spare time we actively browse the Web to explore the news items that we are interested in. At the end of the day, our understanding about the news is a compendium of various information pieces coming from different sources, which complement each other and enrich our news experience. The problem is that in practice it is difficult and time consuming to manually gather all those insights together. Our research tackles this inconvenience by quickly offering extra information about the newscast organized in various dimensions which intend to illustrate all those details you watched but would like to further explore. 
+Today people consume all kind of audiovisual content on a daily basic. From breaking news to satiric videos passing by a tutorial on how to cook that wonderful meal, we are constantly bombarded with all kind of multimedia documents. In this media-overloaded scenario it becomes hardly complicated for us to decide if a candidate video is really worth to be watch, or which are particularly the fragments/s that can be potentially interesting without having to watch the entire video.
+
+Some studies made over media entertainment streaming services~\cite{Yu2006} reveal that the majority of partial content views (52.55\%) are terminated by the user within the first 10 minutes, and about a 37\% of these sessions do not last past the first ﬁve minutes. This phenomena is even more evident when it comes to the the Web ecosystem \footnote{\fontsize{8pt}{1em}\selectfont \url{http://thenextweb.com/socialmedia/2014/05/02/optimal-length-video-marketing-content-short-possible/}}. In practice, it is difficult and time consuming to manually gather video insights that (1) give the viewers a fair understanding about what the video is talking about and (2) allow to easily visualize which fragments in particular are illustrating the main topics. Our research tackles this inconvenience by proposing a set of automatically annotated media fragments, called hot spots, which intend to highlight the main ideas of the video and make easier for the user to decide which fragment can be relevant for him to watch or share.
+
+%Segmentation of videos
+The challenge of video segmentation has been addressed by many previous research approaches. Some of them rely exclusively in visual and low-level features like color histograms or visual concept detection clustering operations~\cite{snoek2005multimodal}. On the other hand, there are some pure text–based implementations which leverage in the transcripts and written annotations that goes together with the video, like for example~\cite{chang1992image}. A special variety of the latter tries to go further and study the semantic behind the text by identifying relevant concepts and linking them to a taxonomy, like in~\cite{de2013ghent}. Finally, there are some initiatives that combine different kinds of techniques~\cite{chang2005combining} in order to keep the best of each. Our demo fits into this last category, with the added value of leveraging on the Web: it is applicable over online videos and it relies on the Web knowledge in order to analyze and annotate the content itself. 
 
 % Semantic
-The problem of multimedia annotation has been traditionally addressed by applying different analysis techniques~\cite{ballan2011event}, but extracting semantic information from a video is still a challenging task. One possible approach consists in using Named Entity Recognition (NER) over the textual information attached to particular video fragment. Those techniques are an essential component within the Information Extraction field that focus on: identifying atomic information units in texts, named entities; classifying entities into predefined categories (also called context types) and linking to real world objects using web identifiers (Named Entity Disambiguation). A growing number of APIs provide such a service, like AlchemyAPI\footnote{\fontsize{8pt}{1em}\selectfont \url{http://www.alchemyapi.com/}} or DBpedia Spotlight\footnote{\fontsize{8pt}{1em}\selectfont \url{http://spotlight.dbpedia.org/}}. If the textual information attached to a video contains temporal references (e.g. subtitles), it is possible to align the entities with the time when they appear in the video. In this line, Yunjia et al.~\cite{yunjia2013} have probed that named entity recognition techniques applied on video subtitles can produce good results for video classification. 
-
+Concerning the multimedia annotation the literature covers a wide range of different analysis techniques~\cite{ballan2011event}. One of the main approaches consists on running Named Entity Recognition (NER) over the textual information attached to particular video fragment. Those techniques are an essential component within the Information Extraction field that focus on: identifying atomic information units in texts, named entities; classifying entities into predefined categories (also called context types) and linking to real world objects using web identifiers (Named Entity Disambiguation). A growing number of APIs provide such a service, like AlchemyAPI\footnote{\fontsize{8pt}{1em}\selectfont \url{http://www.alchemyapi.com/}} or DBpedia Spotlight\footnote{\fontsize{8pt}{1em}\selectfont \url{http://spotlight.dbpedia.org/}}. If the textual information attached to a video contains temporal references (e.g. subtitles), it is possible to align the entities with the time when they appear in the video. In this line, Yunjia et al.~\cite{yunjia2013} have probed that named entity recognition techniques applied on video subtitles can produce good results for video classification. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%  Generating and Displaying Hot Spots in Web Videos     %%%
+%%%  Generating and Displaying Hot Spots in Web Videos    %%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Generating and Displaying Hot Spots in Web Videos}
 \label{sec:hotspots}
 
-\begin{itemize}
-  \item General goal and contributions.
-  \item Summary of the approach.
-\end{itemize}
+This demo implements a multimodal algorithm for detecting key fragments in a Web video and annotating them in order to have a quick overview of which are the main topics involved and be able to watch or share a specific part of the media content. In this section we unveil the details of this approach, specially in what concerns the segmentation of the video, the annotation of the obtained fragments, the selection of the hot spots, and the summarization of the main topics inside them.
 
-%%%  Annotating Web Videos %%%
-\subsection{Annotating Web Videos}
-\label{sec:videoannotation}
-
-\begin{itemize}
-  \item Visual clues: Shot segmentation + concept detection.
-  \item Textual clues: Subtitles
-  \item Semantic clues: Named Entity Extraction.
-\end{itemize}
 
 %%%  Media Fragments Generation %%%
 \subsection{Hot Spots Generation}
 \label{sec:fragmentsgeneration}
 
 \begin{itemize}
-  \item Clustering algorithm.
-  \item Ranking of entities
-  \item Ranking of Visual concepts.
+  \item Adjusting Chapters via Shots.
+  \item Clustering algorithm: Accumulative merging of temporally consecutive Chapters.
+  \item Ranking of Chapters via Annotations. (Using Topics + Chapters) Inverse of the duration.
+  \item Summarizing chapter.
 \end{itemize}
 
+
+
+%%%  Annotating Web Videos %%%
+\subsection{Annotating Web Videos}
+\label{sec:videoannotation}
+
+Start by shot segmentation.
+
+
+\begin{itemize}
+  \item Visual clues: Shot segmentation.
+  \item Textual clues: Subtitles
+  \item Semantic clues: Named Entity Extraction and topic straction
+\end{itemize}
+
+
 \subsection{Displaying Hot Spots in MF Player}
+\label{sec:hotspots}
 
 \begin{itemize}
   \item UI Description.
@@ -113,6 +123,7 @@ The problem of multimedia annotation has been traditionally addressed by applyin
 \subsubsection{The use case: TED Talks}
 \label{sec:usecase}
 
+
 		
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%  4. Discussion  %%%
@@ -121,7 +132,11 @@ The problem of multimedia annotation has been traditionally addressed by applyin
 \section{Discussion}
 \label{sec:discussion}
 
-TODO
+Leverage on Web.
+Easy compsuption
+Nice graphic interface.
+Future: Hyperlinking.
+Future: Evaluantion
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  Acknowledgments  %%%
