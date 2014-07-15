@@ -81,50 +81,57 @@ Concerning the multimedia annotation the literature covers a wide range of diffe
 \section{Generating and Displaying Hot Spots in Web Videos}
 \label{sec:hotspots}
 
-This demo implements a multimodal algorithm for detecting key fragments in a Web video and annotating them in order to have a quick overview of which are the main topics involved and be able to watch or share a specific part of the media content. In this section we unveil the details of this approach, specially in what concerns the segmentation of the video, the annotation of the obtained fragments, the selection of the hot spots, and the summarization of the main topics inside them.
-
+This demo implements a multimodal algorithm for detecting key fragments in a set of 1681 TED talks and annotating them in order to have a quick overview of which are the main topics involved and watch or share the specific parts of the media content which talk about those main ideas. In this section we unveil the details of this approach, specially in what concerns the segmentation of the video, the annotation of the obtained fragments, the selection of the hot spots, and the summarization of the main topics inside them.
 
 %%%  Media Fragments Generation %%%
-\subsection{Hot Spots Generation}
+\subsection{Video Segmentation}
 \label{sec:fragmentsgeneration}
 
-\begin{itemize}
-  \item Adjusting Chapters via Shots.
-  \item Clustering algorithm: Accumulative merging of temporally consecutive Chapters.
-  \item Ranking of Chapters via Annotations. (Using Topics + Chapters) Inverse of the duration.
-  \item Summarizing chapter.
-\end{itemize}
+In first place we perform a video segmentation based only in pure visual features. The resultant fragments, called shots, represent the continuous footage or sequence between two edits or cuts\footnote{\fontsize{8pt}{1em}\selectfont \url{http://en.wikipedia.org/wiki/Shot_(filmmaking)}} and can be consequently considered like the minimum visually-consistent video chunks. The algorithm used in our approach~\cite{sidiropoulos2011temporal} detects two kind of transitions between successive shots of the video: abrupt, where one frame belongs to a shot and the following frame belongs to the next shot, or gradual, when in the middle there are some spatial-chromatic video production effects which gradually replace one shot by another.   
 
+However, those shots are too small when it comes to semantic consistency. A visual change in the frame flow does not necessary reveal a disruption in what is being told at that particular time of the video. We introduce then the notion of Chapters for naming chunks which illustrate particular topics inside the entire video context. In order to obtain such fragments we have leveraged in some marks embedded in the available video transcripts and not currently exploited by the TED portal, which indicate the start of a new paragraph. According to their definition \footnote{\fontsize{8pt}{1em}\selectfont \url{http://en.wikipedia.org/wiki/Paragraph}}, paragraphs are self-contained units of a discourse dealing with a particular point or idea, which is exactly what we are looking for at this point. Mapping those textual boundaries to the temporal references of the corresponding starting and ending subtitle blocks, we obtain the desired chapters. 
 
+In a last step semantic fragments are combined with visual shots for keeping the best of both approaches. In particular we extend chapters back and forward in time in order to include comprise shots. This way we end up having semantically independent segments with have visually consistent borders at the same time.
 
 %%%  Annotating Web Videos %%%
 \subsection{Annotating Web Videos}
 \label{sec:videoannotation}
 
-Start by shot segmentation.
+The 1681 TED has subtitles available. 
+
+Semantic clues: Named Entity Extraction and topic extraction
+
+Confidence score from the Entity Extraction and topic extraction.
+Temporal references allow to map every relevant topic
+
+Result: list of fragments annotated
+
+figure?
 
 
-\begin{itemize}
-  \item Visual clues: Shot segmentation.
-  \item Textual clues: Subtitles
-  \item Semantic clues: Named Entity Extraction and topic straction
-\end{itemize}
-
-
-\subsection{Displaying Hot Spots in MF Player}
+\subsection{Hot Spots Generation  MF Player}
 \label{sec:hotspots}
 
-\begin{itemize}
-  \item UI Description.
-  \item Connection Backend-Frontend via REST services.
-\end{itemize}
+  Clustering algorithm: Accumulative merging of temporally consecutive Chapters.
+  
+  Comparison function: frequency of the topic x relevance of the topic. The operation finished when there are not new merging operations.
+  
+  The number of fragments is still high. We want to filter then to obtain what we call the hot spots.
 
+	Ranking of Chapters via Annotations. (Using Topics + Chapters) Inverse of the duration. (Introducing the temporal dimension)
+  
+ Summarizing chapter.
+  This will be shown as a teaser of the fragment content
+  
+ 
 %%%  Use Case: TED talks %%%
-\subsubsection{The use case: TED Talks}
+\subsubsection{Displaying Hot spots in TED Talks demo}
 \label{sec:usecase}
 
+UI Description. (According to the pictures)
 
-		
+Connection Backend-Frontend via REST services.
+
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%  4. Discussion  %%%
 %%%%%%%%%%%%%%%%%%%%%%%
