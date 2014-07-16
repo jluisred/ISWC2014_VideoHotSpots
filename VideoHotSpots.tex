@@ -28,7 +28,6 @@
 \lstdefinestyle{rdfa}{numberblanklines=true, morekeywords={}}
 
 
-
 \begin{document}
 \frontmatter          % for the preliminaries
 \pagestyle{headings}  % switches on printing of running heads
@@ -49,11 +48,11 @@ EURECOM, Sophia Antipolis, France, \\
 %%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-In this demo paper we present an approach that leverages on visual analysis techniques and the knowledge present on the Web for identifying relevant fragments (called hot spots) inside educational online videos, in order to get a good overview about what is being told and promote the consumption of media clips at a higher level of granularity. 
+In this demo paper we present an approach that leverages on visual analysis techniques and the knowledge present on the Web for identifying relevant fragments (called Hot Spots) inside educational online videos, in order to get a good overview about what is being told and promote the consumption of media clips at a higher level of granularity. 
 
 Our approach performs a first segmentation by combining visual features and semantic units in transcripts (paragraph). The resultant video fragments are semantically annotated via Entity Extraction and Topic detection. By identifying consecutive chapters talking about similar topics and entities, we merge the initial segments into bigger and independent semantic media units. Finally we rank them, filter out the lower scored candidates, and propose a summary that illustrate the fragment and can be visualized on the dedicate media player. The algorithm has been applied int a set of educational TED talks. An online demo of the proposed solution is available at \url{http://linkedtv.eurecom.fr/mediafragmentplayer}.
 
-\keywords{Semantic Video Annotation, Media Fragments, ,}
+\keywords{Semantic Video Annotation, Media Fragments, Summarization}
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -64,7 +63,7 @@ Our approach performs a first segmentation by combining visual features and sema
 
 Today people consume all kind of audiovisual content on a daily basic. From breaking news to satiric videos passing by a tutorial on how to cook that wonderful meal, we are constantly bombarded with all kind of multimedia documents. In this media-overloaded scenario it becomes hardly complicated for us to decide if a candidate video is really worth to be watch, or which are particularly the fragments/s that can be potentially interesting without having to watch the entire video.
 
-This phenomena is equally evident when it comes to curated, editorial and educational Web videos. Some studies made over media entertainment streaming services~\cite{Yu2006} reveal that the majority of partial content views (52.55\%) are terminated by the user within the first 10 minutes, and about a 37\% of these sessions do not last past the first five minutes. In practice, it is difficult and time consuming to manually gather video insights that (1) give the viewers a fair understanding about what the video is talking about and (2) allow to easily visualize which fragments in particular are illustrating the main topics. Our research tackles this inconvenience by proposing a set of automatically annotated media fragments, called hot spots, which intend to highlight the main ideas of the video and make easier for the user to decide which fragment can be relevant for him to watch or share.
+This phenomena is equally evident when it comes to curated, editorial and educational Web videos. Some studies made over media entertainment streaming services~\cite{Yu2006} reveal that the majority of partial content views (52.55\%) are terminated by the user within the first 10 minutes, and about a 37\% of these sessions do not last past the first five minutes. In practice, it is difficult and time consuming to manually gather video insights that (1) give the viewers a fair understanding about what the video is talking about and (2) allow to easily visualize which fragments in particular are illustrating the main topics. Our research tackles this inconvenience by proposing a set of automatically annotated media fragments called Hot Spots, which intend to highlight the main ideas of the video and make easier for the user to decide which fragment can be relevant for him to watch or share.
 
 %Segmentation of videos
 The challenge of video segmentation has been addressed by many previous research approaches. Some of them rely exclusively in visual and low-level features like color histograms or visual concept detection clustering operations~\cite{snoek2005multimodal}. On the other hand, there are some pure text–based implementations which leverage in the transcripts and written annotations that goes together with the video, like for example~\cite{chang1992image}. A special variety of the latter tries to go further and study the semantic behind the text by identifying relevant concepts and linking them to a taxonomy, like in~\cite{de2013ghent}. Finally, there are some initiatives that combine different kinds of techniques~\cite{chang2005combining} in order to keep the best of each. Our demo fits into this last category, with the added value of leveraging on the Web: it is applicable over online videos and it relies on the Web knowledge in order to analyze and annotate the content itself. 
@@ -79,7 +78,7 @@ Concerning the multimedia annotation the literature covers a wide range of diffe
 \section{Generating and Displaying Hot Spots in Web Videos}
 \label{sec:hotspots}
 
-This demo implements a multimodal algorithm for detecting key fragments in a set of 1681 TED talks and annotating them in order to have a quick overview of which are the main topics involved and watch or share the specific parts of the media content which talk about those main ideas. In this section we unveil the details of this approach, specially in what concerns the segmentation of the video, the annotation of the obtained fragments, the selection of the hot spots, and the summarization of the main topics inside them.
+This demo implements a multimodal algorithm for detecting key fragments in a set of 1681 TED talks and annotating them in order to have a quick overview of which are the main topics involved and watch or share the specific parts of the media content which talk about those main ideas. In this section we unveil the details of this approach, specially in what concerns the segmentation of the video, the annotation of the obtained fragments, the selection of the Hot Spots, and the summarization of the main topics inside them.
 
 %%%  Media Fragments Generation %%%
 \subsection{Video Segmentation}
@@ -104,24 +103,37 @@ Both entities and topics come accompanied by a relevance score which indicates t
 \subsection{Hot Spots Generation}
 \label{sec:hotspots}
 
- Clustering algorithm: Accumulative merging of temporally consecutive Chapters.
-  
-  Comparison function that leverages on the annotation. Takes into frequency of the topic x relevance of the topic. FORMULA
-  The operation finished when there are not new merging operations.
-  
-  The number of fragments is still high. We want to filter then to obtain what we call the hot spots. FORMULA
-  Ranking of Chapters via Annotations. (Using Topics + Chapters) Inverse of the duration. (Introducing the temporal dimension)
-  
- Summarizing chapter. This will be shown as a teaser of the fragment content in de dedicated media player.
-  
+At this point chapters have their own demarcated semantic information. But sometimes the semantic descriptions between temporally close chunks are similar enough to be considered as a single unit, either because they talk about the same topics or because they mention the same named entities. In order to tackle this phenomena we apply a clustering algorithm over the chapters, which accumulatively merges of consecutive similar fragments.
+In order to perform this operation we apply a similarity function between consecutive pairs of chapters until no new merges are possible. This comparison leverages on the annotations attached to each segment by analyzing the number of coincidences between the topics $T = max_{3}\left \{ \sum_{topic_{i}} Rel_{i} \right  \}$ and entities $E = max_{5W's}\left \{ \sum_{entity_{i}} Rel_{i} \right  \}$: 
+
+\begin{equation}
+\begin{split}
+d\left ( Ch_{1} , Ch_{2} \right ) = w_{topic}\cdot \left ( \frac{\left | T_{1} \bigcap T_{2} \right |}{max \left \{ \left | T_{1} \right |, \left | T_{2} \right |\right \}} \right ) + w_{entity}\cdot \left ( \frac{\left | E_{1} \bigcap E_{2} \right |}{max \left \{ \left | E_{1} \right |, \left | E_{2} \right |\right \}} \right ) \\
+\end{split}
+\end{equation}
  
+After clustering process is finished the chapters have grown in length and decreased in number, but there are still too many candidates which should not be proposed as Hot Spots. Therefore we filter those fragments which contain potentially less decisive topic and entities. We define the a function for measuring the relevance of a video segment, which directly depends on the relevance and frequency of its main annotations and is inversely proportional to its length:
+
+\begin{equation}
+\begin{split}
+Relevance\left ( Ch \right ) = \frac {w_{topic}\cdot \sum_{t \in T} Rel_{t} + w_{entity}\cdot \sum_{e \in E} Rel_{e}}{Duration(Ch)} \\
+\end{split}
+\end{equation}
+  
+In our current approach, the Hot Spots are those fragments whose relative relevance falls under the first quarter of the final score distribution. In a last step, for each Hot Spot we also generate a summarization to be shown in the dedicated media player. Again, we take advantage of the previously calculated main topics $T$ and main entities $E$, which are distributed along 5 dimensions corresponding to the Five W's~\cite{LiJia2007} journalist concept.
+  
 %%%  Use Case: TED talks %%%
-\subsubsection{Displaying Hot spots in TED Talks}
+\subsection{Displaying Hot Spots from TED Talks}
 \label{sec:usecase}
 
-This is the demo. UI Description. (According to the pictures)
+The obtained Hot Spots and their summaries are visualized in a user friendly MediaFragment URI \footnote{\fontsize{8pt}{1em}\selectfont \url{http://www.w3.org/TR/media-frags/}} compliant Web media player. The workflow to get Hot Spots available for a certain Ted talk goes like follows: after introducing a valid URL, we land in the video page from where the hot spot detection can be launch for the first time (see Figure~\ref{fig:demoScreenShots}a). When results are available, the corresponding fragments get highlighted on the timeline together with the label of the most relevant chapter annotation. This brief description can be extended to the broader set of main entities and topics in order to get a more exhaustive summary (see Figure~\ref{fig:demoScreenShots}c). Finally as shown in Figure~\ref{fig:demoScreenShots}d you can always relive that part of the talk you like the most or you would like to share with others. 
 
-Connection Backend-Frontend via REST services.
+\begin{figure}[h!]
+\centering
+\includegraphics[width=1\textwidth]{figure/Ted_U}
+\caption{Visualizing the Hot Spots of a TED Talk (available at \fontsize{8pt}{1em}\selectfont \protect\url{http://linkedtv.eurecom.fr/mediafragmentplayer/video/bbd70fff-e828-4db5-80d0-1a4c9aea430e})}
+\label{fig:demoScreenShots}%\end{figure}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %%%  4. Discussion  %%%
