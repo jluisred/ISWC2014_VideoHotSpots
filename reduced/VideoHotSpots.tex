@@ -22,6 +22,7 @@
 \usepackage{pbox}
 \usepackage{amsfonts}
 
+\setlength{\belowcaptionskip}{-30pt}
 
 % listing styles
 \lstset{numbers=left, numberstyle=\tiny,basicstyle=\ttfamily\scriptsize, tabsize=2, keywordstyle=\underbar, stringstyle=\small, backgroundcolor=\color[gray]{0.94}, framexleftmargin=2pt}
@@ -40,7 +41,6 @@ EURECOM, Sophia Antipolis, France, \\
 \email{\{redondo, mariella.sabatino, pasquale.lisena, raphael.troncy\}@eurecom.fr}
 }
 
-
 \maketitle              % typeset the title of the contribution
 
 %%%%%%%%%%%%%%%%%%
@@ -48,9 +48,9 @@ EURECOM, Sophia Antipolis, France, \\
 %%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
-This paper presents an approach for identifying relevant fragments (called Hot Spots) inside educational online videos that combines visual analysis techniques and the knowledge from the Web in order to get a good overview about the content and promote a media consumption at a higher level of granularity. 
+This paper presents an approach for identifying relevant fragments (called Hot Spots) inside educational online videos that combines visual analysis techniques and the knowledge from the Web in order to get a quick overview about the content and promote a media consumption at a higher level of granularity. 
 
-We perform a first segmentation by combining visual features and semantic units in transcripts (paragraphs). The resultant fragments are semantically annotated via Entity Extraction and Topic detection. By identifying consecutive chapters talking about similar topics and entities, we merge the initial segments into bigger and semantic independent media units. Finally we rank them and filter out the lower scored candidates, and propose a summary that illustrate the fragment and can be visualized on the dedicate media player. An online demo over a set of TED talks is available at \url{http://linkedtv.eurecom.fr/mediafragmentplayer}.
+We perform a first segmentation by combining visual features and semantic units in transcripts (paragraphs). The resultant fragments are semantically annotated via Named Entity Extraction and Topic detection. After identifying consecutive chapters talking about similar topics and entities, we merge them into bigger and semantic independent media units. Finally we rank them, filter out the lower scored candidates, and propose a summary that illustrates the fragment on the dedicate media player. An online demo is available at \url{http://linkedtv.eurecom.fr/mediafragmentplayer}.
 
 \keywords{Semantic Video Annotation, Media Fragments, Summarization}
 \end{abstract}
@@ -63,7 +63,7 @@ We perform a first segmentation by combining visual features and semantic units 
 
 Today people consume all kind of audiovisual content on a daily basic. From breaking news to satiric videos passing by a tutorial on how to cook that wonderful meal, we are constantly bombarded with all kind of multimedia documents. In this media-overloaded scenario it becomes hardly complicated for us to decide if a candidate video is really worth to be watch, or which are the fragments that can be potentially relevant for us without having to watch the entire video.
 
-This phenomena is equally evident when it comes to curated, editorial and educational Web videos. Some studies made over media entertainment streaming services~\cite{Yu2006} reveal that the majority of partial content views (52.55\%) are terminated by the user within the first 10 minutes, and about a 37\% of these sessions do not last past the first five minutes. In practice, it is difficult and time consuming to manually gather video insights that (1) give the viewers a fair understanding about what the video is talking about and (2) allow to easily visualize which fragments in particular are illustrating the main topics. Our research tackles this inconvenience by proposing a set of automatically annotated media fragments called Hot Spots, which intend to highlight the main ideas of the video and make easier for the user to decide which fragment can be relevant for him to watch or share.
+This phenomena is equally evident when it comes to curated, editorial and educational Web videos. Some studies made over media entertainment streaming services~\cite{Yu2006} reveal that the majority of partial content views (52.55\%) are terminated by the user within the first 10 minutes, and about a 37\% of these sessions do not last past the first five minutes. In practice, it is difficult and time consuming to manually gather video insights that give the viewers a fair understanding about what the video is talking about. Our research tackles this inconvenience by proposing a set of automatically annotated media fragments called Hot Spots, which intend to highlight the main ideas of the video and make easier for the user to decide which fragment can be relevant for him to watch or share.
 
 %Segmentation of videos
 The challenge of video segmentation has been addressed by many previous research approaches. Some of them rely exclusively in visual and low-level features like color histograms or visual concept detection clustering operations~\cite{snoek2005multimodal}. On the other hand, there are some pure text–based implementations which leverage in the transcripts and written annotations that goes together with the video, like for example~\cite{chang1992image}. 
@@ -86,18 +86,17 @@ This demo implements a multimodal algorithm for detecting key fragments in a set
 \subsection{Video Segmentation}
 \label{sec:fragmentsgeneration}
 
-In first place we perform a video segmentation based only in pure visual features. The resultant fragments, called Shots, represent the continuous footage or sequence between two edits or cuts\footnote{\fontsize{8pt}{1em}\selectfont \url{http://en.wikipedia.org/wiki/Shot_(filmmaking)}}. They can be considered like the smaller visually-consistent video chunks. The algorithm used in our approach has been described in~\cite{sidiropoulos2011temporal}.
-However, those shots are too small when it comes to semantic information: a visual change in the frame flow does not necessary reveal a disruption in what is being told on the video. We therefore introduce the notion of Chapters for naming wider chunks illustrating particular topics inside the entire video context. In order to obtain such fragments we have leveraged in some marks embedded in the available video transcripts which indicate the start of a new paragraph. As paragraphs are indeed self-contained units of a discourse dealing with a particular point or idea \footnote{\fontsize{8pt}{1em}\selectfont \url{http://en.wikipedia.org/wiki/Paragraph}}, those are exactly the semantic fragment we are looking for at this point. Mapping those textual boundaries to the temporal references of the corresponding starting and ending subtitle blocks we obtain the desired Chapters. 
+In first place we perform a video segmentation based only in pure visual features. The resultant fragments, called Shots, are considered like the smaller visually-consistent video chunks. The algorithm used in our approach has been described in~\cite{sidiropoulos2011temporal}. However semantically speaking those shots are too small: a visual change in the frame flow does not necessary reveal a disruption in what is being told on the video. We therefore introduce the notion of Chapters for naming wider chunks illustrating particular topics inside the entire video context. In order to obtain such fragments we have leveraged in some marks embedded in the available video transcripts that indicate the start of a new paragraph. As paragraphs are indeed self-contained units of a discourse dealing with a particular point or idea \footnote{\fontsize{8pt}{1em}\selectfont \url{http://en.wikipedia.org/wiki/Paragraph}}, those fragment become semantically valid for us at this point. 
 
-In a last step semantic fragments are combined with visual shots for getting the best of both techniques. In particular we extend chapters back and forward in time in order to comprise complete Shots and have semantically independent segments with visually consistent borders.
+In a last step those fragments are combined with visual Shots for getting the best of both techniques. In particular we extend Chapters back and forward in time in order to include complete Shots and produce semantically independent segments with visually consistent borders.
 
 %%%  Annotating Web Videos %%%
 \subsection{Media Fragment Annotation}
 \label{sec:videoannotation}
 
-Once the video has been segmented the corresponding fragments are analyzed and annotated. We will rely on the textual information (subtitles) available for the 1681 TED talks in order to detect two kind of semantic clues: topics (prominent matters the video is talking about) and Named Entities taking part in the story. For the former we have used TextRazor\footnote{\fontsize{8pt}{1em}\selectfont \url{http://en.wikipedia.org/wiki/Paragraph}}, while for the latter we used the NERD framework~\cite{Rizzo2012b}. 
+Once the video has been segmented the resultant fragments are analyzed and annotated. We will rely on the textual information (subtitles) available for the 1681 TED talks in order to detect two kind of semantic clues: topics (prominent matters the video is talking about) and Named Entities taking part in the story. For the former we have used TextRazor\footnote{\fontsize{8pt}{1em}\selectfont \url{https://www.textrazor.com/documentation}}, while for the latter we used the NERD framework~\cite{Rizzo2012b}. 
 
-Both entities and topics come accompanied by a relevance score which indicates the importance of that particular semantic unit inside the whole context of the video story. Every item detected is then mapped to the temporal reference of the subtitle block where it has been mentioned, and is therefore associated with corresponding chapter where that annotation falls into. The output of this phase is a list of chapters which are individually annotated with topics and entities classified according to the NERD Ontology\footnote{\fontsize{8pt}{1em}\selectfont \url{http://nerd.eurecom.fr/ontology/nerd-v0.5.n3}}. 
+Both entities and topics come accompanied by a relevance score which indicates the importance of that particular semantic unit inside the whole context of the video story. Every item detected is then mapped to the Chapter that comprises the subtitle block where the word has been mentioned. The output of this phase is a list of Chapters individually annotated with named entities (according to the NERD Ontology\footnote{\fontsize{8pt}{1em}\selectfont \url{http://nerd.eurecom.fr/ontology/nerd-v0.5.n3}}) and topics. 
 
 % TODO Figure of a timeline with chapters and annotations being shown (probably not enough space)
 
@@ -124,10 +123,10 @@ After clustering process is finished the chapters have grown in length and decre
 In a last step, for each Hot Spot we also generate a summarization to be shown in the dedicated media player. Again, we take advantage of the previously calculated main topics $T$ and main entities $E$.
   
 %%%  Use Case: TED talks %%%
-\subsection{Displaying Hot Spots from TED Talks}
+\subsection{Displaying Hot Spots for TED Talks}
 \label{sec:usecase}
 
-The obtained Hot Spots and their summaries are visualized in a user friendly MediaFragment URI \footnote{\fontsize{8pt}{1em}\selectfont \url{http://www.w3.org/TR/media-frags/}} compliant media player. The workflow to get Hot Spots available for a certain Ted talk goes like follows: after introducing a valid URL, we land in the video page from where the hot spot detection can be launch for the first time (see Figure~\ref{fig:demoScreenShots}a). When results are available, the corresponding fragments get highlighted on the timeline together with the label of the most relevant chapter annotation. This brief description can be extended to the broader set of main entities and topics in order to get a more exhaustive summary (see Figure~\ref{fig:demoScreenShots}c). Finally as shown in Figure~\ref{fig:demoScreenShots}d you can always relive that part of the talk you like the most or you would like to share with others. 
+The obtained Hot Spots and their summaries are visualized in a user friendly MediaFragment URI \footnote{\fontsize{8pt}{1em}\selectfont \url{http://www.w3.org/TR/media-frags/}} compliant media player. The procedure to get Hot Spots available for a certain Ted talk goes like follows: after introducing a valid URL, we land in the video page from where the hot spot detection can be launch for the first time (see Figure~\ref{fig:demoScreenShots}a). When results are available, the corresponding fragments get highlighted on the timeline together with the label of the most relevant chapter annotation. This brief description can be extended to the broader set of main entities and topics in order to get a more exhaustive summary (see Figure~\ref{fig:demoScreenShots}c). Finally as shown in Figure~\ref{fig:demoScreenShots}d you can always relive that part of the talk you like the most or you would like to share with others. 
 
 \begin{figure}[h!]
 \centering
@@ -143,7 +142,7 @@ The obtained Hot Spots and their summaries are visualized in a user friendly Med
 \section{Discussion}
 \label{sec:discussion}
 
-We have presented a demo tool for automatically discovering Hot Spots in online and educational videos. We leverage in a visual analysis of the multimedia content and in the knowledge available on Web for detecting which fragments illustrate the main topics being told in the video. Those Hot Spots allows the viewer to quickly decide if the video is interesting for him and will incentive a more fine-grained consumption of the resource in the form of media fragments. In addition Hot Spots are visualized in a Web compliant media player which is also able to display the corresponding semantic annotations. 
+We have presented a demo tool for automatically discovering Hot Spots in online and educational videos. We leverage in a visual analysis of the multimedia content and in the knowledge available on Web for detecting which fragments illustrate the main topics in the video. Those Hot Spots allow the viewer to quickly decide if the video is interesting for him and will incentive a more fine-grained consumption in the form of media fragments. In addition, Hot Spots are visualized in a Web media player which also display the corresponding semantic annotations. 
 
 Regarding upcoming research efforts in this same line  we plan to carry out an exhaustive evaluation of our solution involving real users feedback, in order to optimize the results of our Hot Spot generation algorithm and to improve the usability and efficiency of the developed interface. In addition in future developments we plan to further exploit the segmentation results and their corresponding annotations for establishing links between fragments belonging to different videos so the user can easily jump between fragments which seem to share a certain semantic similarity. 
 
