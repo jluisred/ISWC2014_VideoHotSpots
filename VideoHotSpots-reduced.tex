@@ -107,7 +107,7 @@ In a last step, for each Hot Spot, we also generate a summarization to be shown 
 %%%  Exploring Hot Spots within TED Talks %%%
 \subsection{Exploring Hot Spots within TED Talks}
 \label{sec:usecase}
-The Hot Spots and their summaries are visualized in a user friendly Media Fragment URI compliant media player. The procedure to get Hot Spots available for a certain Ted talk goes like follows: after introducing a valid URL, we land in the video page from where the hot spot detection can be launch for the first time (see Figure~\ref{fig:demoScreenShots}a). When results are available, the corresponding fragments get highlighted on the timeline together with the label of the most relevant chapter annotation. This brief description can be extended to the broader set of main entities and topics in order to get a more exhaustive summary (see Figure~\ref{fig:demoScreenShots}c). Finally as shown in Figure~\ref{fig:demoScreenShots}d you can always relive that part of the talk you like the most or you would like to share with others.
+The Hot Spots and their summaries are visualized in a user friendly Media Fragment URI compliant media player. The procedure to get the Hot Spots for a particular Ted talk is the following: the user enters a valid TED Talk URL to get a landing page (Figure~\ref{fig:demoScreenShots}a). When the results are available, the hot spots are highlighted on the timeline together with the label of the most relevant chapter annotation (Figure~\ref{fig:demoScreenShots}b). This label can be extended to a broader set of entities and topics (Figure~\ref{fig:demoScreenShots}c). Finally, the user can always share those hot spots segments using media fragment URIs (Figure~\ref{fig:demoScreenShots}d).
 
 \begin{figure}[htbp]
  \centering
@@ -122,9 +122,9 @@ The Hot Spots and their summaries are visualized in a user friendly Media Fragme
 
 \section{Discussion}
 \label{sec:discussion}
-We have presented a demo tool for automatically discovering Hot Spots in online and educational videos. We leverage in a visual analysis of the multimedia content and in the knowledge available on Web for detecting which fragments illustrate the main topics in the video. Those Hot Spots allow the viewer to quickly decide if the video is interesting for him and will incentive a more fine-grained consumption in the form of media fragments. In addition, Hot Spots are visualized in a Web media player which also display the corresponding semantic annotations.
+We have presented a demo for automatically discovering Hot Spots in online and educational videos. We leverage on visual analysis and background knowledge available in the web of data for detecting what fragments illustrate the best the main topics discussed in the video. Those Hot Spots allow the viewer to quickly decide if a video is worth watching and will provide incentive for consuming videos at the fragment level. In addition, Hot Spots can be explored in a dedicated media fragment player which also display the attached semantic annotations.
 
-Regarding upcoming research efforts in this same line  we plan to carry out an exhaustive evaluation of our solution involving real users feedback, in order to optimize the results of our Hot Spot generation algorithm and to improve the usability and efficiency of the developed interface. In addition in future developments we plan to further exploit the segmentation results and their corresponding annotations for establishing links between fragments belonging to different videos so the user can easily jump between fragments which seem to share a certain semantic similarity.
+We plan to carry out an exhaustive evaluation of our approach involving real users feedback, in order to optimize the results of our Hot Spot detection algorithm and to improve the usability and efficiency of the developed interface. We also plan to further exploit the segmentation results and their corresponding annotations for establishing links between fragments belonging to different videos in order to generate true hypervideos within a closed collection such as TED talks.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  Acknowledgments  %%%
