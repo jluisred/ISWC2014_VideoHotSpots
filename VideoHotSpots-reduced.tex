@@ -22,7 +22,7 @@
 \usepackage{pbox}
 \usepackage{amsfonts}
 
-\setlength{\belowcaptionskip}{-30pt}
+\setlength{\belowcaptionskip}{-20pt}
 
 % listing styles
 \lstset{numbers=left, numberstyle=\tiny,basicstyle=\ttfamily\scriptsize, tabsize=2, keywordstyle=\underbar, stringstyle=\small, backgroundcolor=\color[gray]{0.94}, framexleftmargin=2pt}
@@ -59,9 +59,9 @@ This paper presents a system that detects and enables the exploration of relevan
 
 \section{Introduction}
 \label{sec:introduction}
-Nowadays, people consume all kind of audiovisual content on a daily basis. From breaking news to satiric videos, personal recordings or cooking tutorials, we are constantly feed by video content to watch. A common practice by viewers consists in fast browsing through the video, using sometimes the key frames provided by the video sharing platform, with the risk of missing the essence of the video. This phenomena is even more obvious when it comes to educational web content. A study made over media entertainment streaming services reveals that the majority of partial content views (52.55\%) are ended by the user within the first 10 minutes, and about 37\% of these sessions do not last past the first five minutes~\cite{Yu2006}. In practice, it is difficult and time consuming to manually gather video insights that give the viewers a fair understanding about what the video is talking about. Our research tackles this problem by proposing a set of automatically annotated media fragments called Hot Spots, which intend to highlight the main concepts and topics discussed in a video. We also propose a dedicated exploring interface that eases the consumption and sharing of those video hot spots.
+Nowadays, people consume all kind of audiovisual content on a daily basis. From breaking news to satiric videos, personal recordings or cooking tutorials, we are constantly feed by video content to watch. A common practice by viewers consists in fast browsing through the video, using sometimes the key frames provided by the video sharing platform, with the risk of missing the essence of the video. This phenomena is even more obvious when it comes to educational web content. A study made over media entertainment streaming services reveals that the majority of partial content views (52.55\%) are ended by the user within the first 10 minutes, and about 37\% of these sessions do not last past the first five minutes~\cite{Yu2006}. In practice, it is difficult and time consuming to manually gather video insights that give the viewers a fair understanding about what the video is talking about. Our research tackles this problem by proposing a set of automatically annotated media fragments called Hot Spots, which intend to highlight the main concepts and topics discussed in a video. We also propose a dedicated exploring interface that eases the consumption and sharing of those hot spots.
 
-The challenge of video segmentation has been addressed by numerous previous research. Some of them rely exclusively on low-level visual features such as color histograms or visual concept detection clustering operations~\cite{snoek2005multimodal}. Other approaches rely on text, leveraging the video transcripts and sometimes manual annotations and comments attached to the video~\cite{chang1992image} while the combination of both text and visual features is explored in~\cite{chang2005combining}. Our approach combines also both visual and textual features with the added value of leveraging structured knowledge available in the web of data.
+The challenge of video segmentation has been addressed by numerous previous research. Some of them rely exclusively on low-level visual features such as color histograms or visual concept detection clustering operations~\cite{snoek2005multimodal}. Other approaches rely on text, leveraging the video transcripts and sometimes manual annotations and comments attached to the video~\cite{zha2012text} while the combination of both text and visual features is explored in~\cite{chang2005combining}. Our approach combines also both visual and textual features with the added value of leveraging structured knowledge available in the web of data.
 
 %Concerning the multimedia annotation, one of the main approaches consists on running Named Entity Recognition (NER) over the textual information attached to particular video fragment. Those techniques are an essential component within the Information Extraction field that focus on: identifying atomic information units in texts, named entities; classifying entities into predefined categories (also called context types) and linking to real world objects using web identifiers (Named Entity Disambiguation). A growing number of APIs provide such a service, like AlchemyAPI\footnote{\fontsize{8pt}{1em}\selectfont \url{http://www.alchemyapi.com/}} or DBpedia Spotlight\footnote{\fontsize{8pt}{1em}\selectfont \url{http://spotlight.dbpedia.org/}}.
 
@@ -71,7 +71,7 @@ The challenge of video segmentation has been addressed by numerous previous rese
 
 \section{Generating and Exploring Hot Spots in Web Videos}
 \label{sec:hotspots}
-This demo implements a multimodal algorithm for detecting and annotating the key fragments of a video in order to propose a quick overview about what are the main topics being discussed. We conduct an experiment over a corpora of 1681 TED talks.
+This demo implements a multimodal algorithm for detecting and annotating the key fragments of a video in order to propose a quick overview about what are the main topics being discussed. We conduct an experiment over a corpora of 1681 TED talks~\footnote{\url{http://www.ted.com/}}, a global set of conferences owned by the private non-profit Sapling Foundation under the slogan: "Ideas Worth Spreading"
 
 %%%  Media Fragments Generation %%%
 \subsection{Media Fragments Generation}
@@ -86,7 +86,7 @@ We rely on the subtitles available for the 1681 TED talks for annotating the med
 
 \subsection{Hot Spots Generation}
 \label{sec:hotspots-generation}
-Once all chapters are delimited and annotated, we iteratively cluster them, in particular, when temporally close segments are similar enough in terms of topics named entities. More precisely, we compute a similarity function between consecutive pairs of segments $S_1$ and $S_2$ until no new merges are possible. This comparison leverages on the annotations attached to each segment by analyzing the number of coincidences between topics $T = max_{3}\left \{ \sum_{topic_{i}} Rel_{i} \right \}$ and entities $E = max_{5W's}\left \{ \sum_{entity_{i}} Rel_{i} \right  \}$:
+Once all chapters are delimited and annotated, we iteratively cluster them, in particular, when temporally close segments are similar enough in terms of topics named entities. More precisely, we compute a similarity function between consecutive pairs of segments $S_1$ and $S_2$ until no new merges are possible. This comparison leverages on the annotations attached to each segment by analyzing the number of coincidences between topics $T = max_{3}\left \{ \sum_{topic_{i}} Rel_{i} \right \}$ and entities $E = max_{5W's}\left \{ \sum_{entity_{i}} Rel_{i} \right  \}$, where $Rel_{i}$ is the TexRazor's relevance:
 
 \begin{equation}
 \begin{split}
@@ -124,7 +124,7 @@ The Hot Spots and their summaries are visualized in a user friendly Media Fragme
 \label{sec:discussion}
 We have presented a demo for automatically discovering Hot Spots in online and educational videos. We leverage on visual analysis and background knowledge available in the web of data for detecting what fragments illustrate the best the main topics discussed in the video. Those Hot Spots allow the viewer to quickly decide if a video is worth watching and will provide incentive for consuming videos at the fragment level. In addition, Hot Spots can be explored in a dedicated media fragment player which also display the attached semantic annotations.
 
-We plan to carry out an exhaustive evaluation of our approach involving real users feedback, in order to optimize the results of our Hot Spot detection algorithm and to improve the usability and efficiency of the developed interface. We also plan to further exploit the segmentation results and their corresponding annotations for establishing links between fragments belonging to different videos in order to generate true hypervideos within a closed collection such as TED talks.
+We plan to carry out an exhaustive evaluation of our approach involving real users feedback, in order to optimize the results of our Hot Spot detection algorithm and to improve the usability and efficiency of the developed interface. We also plan to further exploit the segmentation results and their corresponding annotations for establishing links between fragments belonging to different videos in order to generate true hyperlinks within a closed collection such as TED talks, and even make results available following Linked Data principles.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%  Acknowledgments  %%%
